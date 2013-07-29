@@ -41,6 +41,10 @@ $.extend(KhanUtil, {
         return f;
     },
 
+    intPolynomial: function(poly) {
+        return poly.integral();
+    },
+
     ddxPolynomial: function(poly) {
         return poly.derivative();
     },

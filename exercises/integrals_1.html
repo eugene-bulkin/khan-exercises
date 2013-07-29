@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html data-require="math math-format polynomials functional calculus">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Definite integrals of polynomials</title>
+    <script src="../khan-exercise.js"></script>
+    <script type="text/javascript">
+    function generatePolynomial(exponents, x) {
+        var coefs = [];
+        var minDeg = 0, maxDeg = 0;
+        for( var i = 0; i < exponents.length; i++) {
+            var exp = exponents[i];
+            if(exp < minDeg) {
+                minDeg = exp;
+            }
+            if(exp > maxDeg) {
+                maxDeg = exp;
+            }
+            coefs[i] = KhanUtil.randRangeNonZero( -7, 7 );
+        }
+
+        return new KhanUtil.Polynomial( minDeg, maxDeg, coefs, x );
+    }
+    </script>
+</head>
+<body>
+    <div class="exercise">
+        <div class="vars">
+            <var id="X">randVar()</var>
+            <div data-ensure="A < B">
+                <var id="A">randRange(-2, 2)</var>
+                <var id="B">randRange(-2, 2)</var>
+            </div>
+            <var id="TERMS">randRange(1, 3)</var>
+            <var id="EXPONENTS">randRangeUnique( 0, 4, TERMS )</var>
+            <var id="POL">generatePolynomial(EXPONENTS, X)</var>
+            <var id="POLI">intPolynomial(POL)</var>
+            <var id="SOLN">POLI.evalOf(B) - POLI.evalOf(A)</var>
+        </div>
+
+        <div class="problems">
+            <div id="polynomial-integrals">
+                <p class="question">What is the value of <code>\displaystyle\int_{<var>A</var>}^{<var>B</var>} <var>POL</var> \, d<var>X</var></code>?</p>
+                <p class="solution" data-type="rational"><var>SOLN</var></p>
+            </div>
+        </div>
+
+        <div class="hints">
+            <p>Remember the Fundamental Theorem of Calculus!</p>
+            <p>The Fundamental Theorem of Calculus states that if <code>F'(x) = f(x)</code>, then <code>\int_a^b f(x) = F(b) - F(a)</code>.</p>
+            <p>Recall that <code>\int x^n \, dx = \frac{1}{n+1}x^{n+1}</code>.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -318,6 +318,25 @@ $.extend(KhanUtil, {
         }
     },
 
+    // Get an array of unique random numbers between min and max,
+    // that ensures that none of the integers in the array are in
+    // the excludes array.
+    randRangeUniqueExclude: function(min, max, count, excludes) {
+        if (count == null) {
+            return KhanUtil.randRangeExclude(min, max);
+        } else {
+            var toReturn = [];
+            for (var i = min; i <= max; i++) {
+                if (_(excludes).indexOf(i) !== -1) {
+                    continue;
+                }
+                toReturn.push(i);
+            }
+
+            return KhanUtil.shuffle(toReturn, count);
+        }
+    },
+
     // Get a random integer between min and max with a perc chance of hitting
     // target (which is assumed to be in the range, but it doesn't have to be).
     randRangeWeighted: function(min, max, target, perc) {

@@ -96,7 +96,7 @@ $.extend(KhanUtil, {
             for (var i = this.maxDegree; i >= this.minDegree; i--) {
                 var theTerm = term(this.coefs[i], vari, i);
 
-                if (theTerm != null) {
+                if (theTerm != null && this.coefs[i]) {
                     expr.push(theTerm);
                 }
             }
@@ -148,6 +148,20 @@ $.extend(KhanUtil, {
             return hints;
         };
 
+        // ignores constant of integration
+        this.integral = function () {
+            var intCoefs = [];
+
+            for (var i = this.maxDegree; i >= this.minDegree; i--) {
+                intCoefs[i + 1] = this.coefs[i] / (i + 1);
+            }
+
+            var intMinDegree = this.minDegree + 1;
+            var intMaxDegree = this.maxDegree + 1;
+
+            return new KhanUtil.Polynomial(intMinDegree, intMaxDegree, intCoefs, this.variable);
+        }
+
         this.derivative = function() {
             var ddxCoefs = [];
 
@@ -157,8 +171,8 @@ $.extend(KhanUtil, {
 
             // if the term's degree is zero, the derivative degree is not
             // decremented
-            var ddxMinDegree = this.minDegree ? this.minDegree - 1 : 0;
-            var ddxMaxDegree = this.maxDegree ? this.maxDegree - 1 : 0;
+            var ddxMinDegree = this.minDegree ? this.minDegree + 1 : 0;
+            var ddxMaxDegree = this.maxDegree ? this.maxDegree + 1 : 0;
 
             return new KhanUtil.Polynomial(ddxMinDegree, ddxMaxDegree, ddxCoefs, this.variable);
         },
